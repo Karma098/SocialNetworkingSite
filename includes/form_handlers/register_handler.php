@@ -17,18 +17,16 @@ if(isset($_POST['register_button'])){
     $_SESSION['reg_fname']=$fname;
     
     $lname= strip_tags($_POST['reg_lname']); //remove html tags
-    $lname= str_replace(' ','',$lname); //remove spaces
+    $lname= str_replace('','',$lname); //remove spaces
     $lname= ucfirst(strtolower($lname));//uppercase first letter
     $_SESSION['reg_lname']=$lname;
 
     $em= strip_tags($_POST['reg_email']); //remove html tags
     $em= str_replace(' ','',$em); //remove spaces
-    $em= ucfirst(strtolower($em));//uppercase first letter
     $_SESSION['reg_email']=$em;
 
     $em2= strip_tags($_POST['reg_email2']); //remove html tags
     $em2= str_replace(' ','',$em2); //remove spaces
-    $em2= ucfirst(strtolower($em2));//uppercase first letter
     $_SESSION['reg_email2']=$em2;
 
 
@@ -76,13 +74,13 @@ if(isset($_POST['register_button'])){
         }
     }
 
-    if(strlen($password>30)||strlen($password)<5){
+    if(strlen($password)>30||strlen($password)<5){
         array_push($error_array, "Your password must be between 5 and 30 characters<br>");
     }
 
     if(empty($error_array)){
         $password=md5($password);
-        $username = strtolower($fname,"_",$lname);
+        $username = strtolower($fname."_".$lname);
         $check_username_query=mysqli_query($con,"SELECT username FROM users WHERE username='$username'");
         $i=0;
         while(mysqli_num_rows($check_username_query)!=0){
@@ -99,15 +97,21 @@ if(isset($_POST['register_button'])){
         else if($rand==2){
             $profile_pic="assets\images\profile_pics\defaults\head_emerald.png";
         }
-        $query = mysqli_query($con, "INSERT INTO users  VALUES('','$fname','$lname','$em','$password','$date','$profile_pic','0','0','no',',')");
-
-        array_push($error_array,"<span style='color: #14C800'>You're all set go ahead and login!</span><br>");
+        $query="INSERT INTO users  VALUES('','$fname','$lname','$username','$em','$password','$date','$profile_pic','0','0','no',',')";
+        // $query="INSERT INTO `users`(`id`, `first_name`, `last_name`, `username`, `email`, `password`, `signup_date`, `profile_pic`, `num_posts`, `num_likes`, `user_closed`, `friend_array`) VALUES ('','$fname','$lname','$username',$em','$password','$date','$profile_pic','0','0','no',',')";
+        $result = mysqli_query($con,$query);
+        if($result){
+            array_push($error_array,"<span style='color: #14C800'>You're all set go ahead and login!</span><br>");
 
         //Clear session variables
         $_SESSION['reg_fname']="";
         $_SESSION['reg_lname']="";
         $_SESSION['reg_email']="";
         $_SESSION['reg_email2']="";
+        }
+        else{
+            echo "Cannot run query";
+        }
     }
    
     

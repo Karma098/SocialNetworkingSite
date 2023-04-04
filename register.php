@@ -70,8 +70,7 @@ require 'includes/form_handlers/login_handler.php';
         ?>" required>
                     <br>
                     <?php if(in_array("first name should be between 2 and 25<br>",$error_array)) echo "first name should be between 2 and 25<br>"; ?>
-                    <input type="text" name="reg_lname" placeholder="Last Name" value="
-        <?php
+                    <input type="text" name="reg_lname" placeholder="Last Name" value="<?php
          if(isset($_SESSION['reg_lname'])){
             echo $_SESSION['reg_lname'];
          }
