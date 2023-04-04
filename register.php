@@ -47,12 +47,7 @@ if(isset($_POST['register_button'])){
         echo "Emails do not match";
     }
 
-    // if($password==$password2){
-    //     /Check if email in valid format
-    // }
-    // else{
-    //     echo "passwords do not match";
-    // }
+   
     
 }
 ?>
